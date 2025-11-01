@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { parseCookies } from "nookies";
+import { cookies } from 'next/headers'
 
 const BACKEND = process.env.BACKEND_URL || 'http://localhost:8000'
+const COOKIE_NAME = 'ept.token'
 
-function authHeader() {
-    const { 'ept.token': token } = parseCookies()
+async function authHeader() {
+    const token = (await cookies()).get(COOKIE_NAME)?.value
     if (!token) return null
     return { Authorization: `Bearer ${token}` }
 }
 
 export async function GET() {
-    const headers = authHeader()
+    const headers = await authHeader()
     if (!headers) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
     const res = await fetch(`${BACKEND}/api/v1/role-play/`, { headers })
     const text = await res.text()
@@ -18,7 +19,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-    const headers = authHeader()
+    const headers = await authHeader()
     if (!headers) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
     const body = await req.text()
     const res = await fetch(`${BACKEND}/api/v1/role-play/`, {
