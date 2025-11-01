@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EnglishProTech Frontend (Next.js + Tailwind CSS)
+
+This is a frontend that consumes the EnglishProTech FastAPI backend and follows the provided view designs.
+
+- Framework: Next.js (App Router)
+- Styling: Tailwind CSS
+- Node: 24.x
+
+## Prerequisites
+- Node.js 24.x (LTS)
+- npm, yarn, or pnpm
+- Running backend API (default: http://localhost:8000)
 
 ## Getting Started
 
-First, run the development server:
-
+1. Install dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd frontend
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Run the development server
+```bash
+# optionally set the backend URL (defaults to http://localhost:8000)
+export BACKEND_URL=http://localhost:8000
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Open the app
+- http://localhost:3000
+- Unauthenticated users are redirected to /login
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Pages
+- / (Dashboard): Shows welcome and quick actions (per views/home/_dashboard).
+- /login: Cookie-based auth. POSTs credentials to internal `/frontend-api/session` which proxies `/api/v1/auth/token` and sets an HttpOnly cookie.
+- /sign-up: Registration per views/sign-up. Calls backend `/api/v1/user/register`.
+- /role-play (Missions): Lists missions from backend `/api/v1/role-play/` with design inspired by views/missions; links to the play screen.
+- /role-play/play/[roleId]/[level]/[playCode]: Play screen. Submits answers to POST `/api/v1/role-play/` and shows history (play_story) per views/role-play.
 
-## Learn More
+## Auth, Security and API Access
+- JWT is stored in an HttpOnly, SameSite=Lax cookie (Secure in production) named `auth_token`.
+- Route protection is enforced via `middleware.ts` (all routes except /login, /sign-up, static, and /frontend-api).
+- Internal API routes:
+  - POST/DELETE `/frontend-api/session`: login/logout (sets/clears cookie; logout also calls backend DELETE /api/v1/auth when possible).
+  - GET/POST `/frontend-api/proxy/role-play`: forwards to backend `/api/v1/role-play/` with Authorization from cookie.
+  - GET `/frontend-api/proxy/user/me`: forwards to `/api/v1/user/me`.
 
-To learn more about Next.js, take a look at the following resources:
+## How it avoids CORS during development
+`next.config.mjs` defines a rewrite that proxies `/api/*` to the backend (default `http://localhost:8000`). This is used for endpoints we call directly from the browser (e.g., registration). Internal routes under `/frontend-api/*` are handled by Next.js.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To change the backend URL, set env var when running dev/build:
+```bash
+BACKEND_URL=http://127.0.0.1:8000 npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Tailwind CSS
+- Configured via `tailwind.config.ts` and `postcss.config.js`
+- Styles imported from `app/globals.css`
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Build & Run (production)
+```bash
+# build
+npm run build
+# start production server
+npm run start
+```
