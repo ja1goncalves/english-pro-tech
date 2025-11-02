@@ -1,11 +1,11 @@
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
+import { loginUser, logoutUser } from "@/service/user";
 
-const BACKEND = process.env.BACKEND_URL || 'http://localhost:8000'
-const COOKIE_NAME = 'ept.token'
+const cookie_name = process.env.EPT_COOKIE_NAME || 'ept.token'
 
 async function makeCookie(token: string) {
-    (await cookies()).set(COOKIE_NAME, token, {
+    (await cookies()).set(cookie_name, token, {
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
         maxAge: 60,
@@ -38,15 +38,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: 'username and password are required' }, { status: 400 })
         }
 
-        const form = new URLSearchParams()
-        form.set('username', username)
-        form.set('password', password)
-
-        const res = await fetch(`${BACKEND}/api/v1/auth/token`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: form.toString(),
-        })
+        const res = await loginUser(username, password)
 
         if (!res.ok) {
             const text = await res.text()
@@ -68,20 +60,16 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
     try {
-        const token = (await cookies()).get(COOKIE_NAME)?.value
+        const token = (await cookies()).get(cookie_name)?.value
 
-        // Try to logout in backend if we have a token
         if (token) {
-            await fetch(`${BACKEND}/api/v1/auth`, {
-                method: 'DELETE',
-                headers: { Authorization: `Bearer ${token}` },
-            }).catch(() => {})
+            return await logoutUser()
         }
 
-        (await cookies()).delete(COOKIE_NAME);
+        (await cookies()).delete(cookie_name);
         return NextResponse.json({ ok: true })
     } catch (e: any) {
-        (await cookies()).delete(COOKIE_NAME);
+        (await cookies()).delete(cookie_name);
         return NextResponse.json({ ok: true })
     }
 }

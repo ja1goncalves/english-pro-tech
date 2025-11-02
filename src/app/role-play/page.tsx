@@ -2,29 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-
-type RolePlay = {
-  code: string
-  challenge: string
-  xp: number
-  description?: string | null
-}
-
-type RoleLevel = {
-  step: number
-  min_xp: number
-  max_xp: number
-  plays?: RolePlay[]
-}
-
-type Role = {
-  _id: string
-  code: string
-  name: string
-  min_xp: number
-  max_xp: number
-  level?: RoleLevel[]
-}
+import { Role, RoleLevel, RolePlay } from "@/models/models";
 
 export default function RolePlayPage() {
   const [roles, setRoles] = useState<Role[] | null>(null)
@@ -85,8 +63,8 @@ export default function RolePlayPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {roles?.flatMap((role) => (
-              role.level?.flatMap((lvl) => (
-                (lvl.plays || []).map((p) => (
+              role.level?.flatMap((lvl: RoleLevel) => (
+                (lvl.plays || []).map((p: RolePlay) => (
                   <div key={`${role._id}-${lvl.step}-${p.code}`} className="flex flex-col gap-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-lg transition">
                     <div className="flex items-center gap-4">
                       <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50">

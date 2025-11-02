@@ -1,20 +1,7 @@
 import React from 'react'
 import Link from "next/link";
-import { headers } from 'next/headers';
-
-export async function getBaseUrl() {
-    // Obtém os cabeçalhos da requisição
-    const headersList = await headers();
-
-    // O cabeçalho 'x-forwarded-proto' indica o protocolo (http ou https) usado pelo cliente original.
-    // O 'host' indica o host (domínio:porta).
-
-    const host = headersList.get('host'); // Ex: 'localhost:3000' ou 'meudominio.com'
-    const proto = headersList.get('x-forwarded-proto') || 'http'; // Padrão 'http' para desenvolvimento
-
-    // Constrói a baseURL
-    return `${proto}://${host}`;
-}
+import { redirect } from "next/navigation";
+import { getBaseUrl } from "@/utils/util";
 
 async function getUser() {
     const res = await fetch(`${await getBaseUrl() || ''}/frontend-api/proxy/user/me`, { cache: 'no-store' })
@@ -28,6 +15,10 @@ async function getUser() {
 
 export default async function DashboardPage() {
     const user = await getUser()
+
+    if (!user) {
+        redirect('/login')
+    }
 
     return (
         <div className="bg-[#F8F9FA] min-h-[calc(100vh-2rem)] -mx-4 sm:mx-0">

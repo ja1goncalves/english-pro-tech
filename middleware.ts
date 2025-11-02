@@ -21,7 +21,7 @@ export function middleware(req: NextRequest) {
     return NextResponse.next()
   }
 
-  const token = req.cookies.get('auth_token')?.value
+  const token = req.cookies.get(process.env.EPT_COOKIE_NAME || 'ept.token')?.value
 
   if (!token) {
     const url = req.nextUrl.clone()
