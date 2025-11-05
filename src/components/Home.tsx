@@ -1,39 +1,13 @@
 "use client";
 
-import React, {useEffect, useState} from "react";
-import { User } from "@/models/models";
+import React, {useContext, useState} from "react";
 import { Header } from "@/components/Header";
-import {redirect} from "next/navigation";
+import {AuthContext} from "@/components/AuthProvider";
 
 export function Home() {
-    const [user, setUser] = useState<User | null>(null)
     const [error, setError] = useState<string | null>(null)
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        const getCurrentUser = async () => {
-            try {
-                setLoading(true)
-                const res = await fetch('/frontend-api/proxy/user/me', { cache: 'no-store' })
-                if (!res.ok) {
-                    if (res.status === 401) {
-                        setUser(null)
-                        redirect('/login')
-                    }
-                    const text = await res.text()
-                    throw new Error(text || `Failed to load roles (${res.status})`)
-                }
-                const data = (await res.json()) as User
-                localStorage.setItem('eptCurrentUser', data.username);
-                setUser(data)
-            } catch (e: any) {
-                setError(e.message || 'Failed to load')
-            } finally {
-                setLoading(false)
-            }
-        }
-        getCurrentUser()
-    }, [])
+    const [loading, setLoading] = useState(false)
+    const { user } = useContext(AuthContext);
 
     return (
         <div className="bg-slate-900 text-slate-100 min-h-[calc(100vh-2rem)] -mx-4 sm:mx-0">

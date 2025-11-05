@@ -58,12 +58,14 @@ export async function POST(req: NextRequest) {
     }
 }
 
-export async function DELETE(req: NextRequest) {
+export async function DELETE(request: NextRequest) {
     try {
         const token = (await cookies()).get(cookie_name)?.value
 
         if (token) {
-            return await logoutUser()
+            await logoutUser()
+            // const response = NextResponse.redirect(new URL('/', request.url))
+            // response.cookies.delete(cookie_name)
         }
 
         (await cookies()).delete(cookie_name);

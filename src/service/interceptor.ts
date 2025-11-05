@@ -31,14 +31,8 @@ export async function fetchAPI(endpoint: string, options = {}, contentType = 'ap
                 : await response.text()
 
             if (response.status === 401) {
-                // await logoutUser();
                 (await cookies()).delete(cookie_name);
-                if (typeof window !== 'undefined') {
-                    window.location.reload();
-                }
-
                 console.log('Unauthorized: Session expired or invalid token.');
-
             } else if (response.status === 500) {
                 if (typeof window !== 'undefined' && text) {
                     alert(text);

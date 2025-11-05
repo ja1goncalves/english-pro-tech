@@ -64,7 +64,7 @@ export default function RolePlayPage() {
                                         {(lvl.plays || []).map((p: RolePlay, index: number) => {
 
                                             // Assume que a primeira atividade (index 0) é a "atual"
-                                            const isDisabled = p.disabled || lvl.disabled || role.disabled;
+                                            const isDisabled = lvl.disabled || role.disabled;
                                             const placement = getPlacement(index); // 0, 1, ou 2
 
                                             // O nó da atividade
@@ -77,7 +77,10 @@ export default function RolePlayPage() {
                                                             {/* Nó da Atividade Atual: Brilhante, maior e clicável */}
                                                             <Link
                                                                 href={`/role-play/play/${role._id}/${lvl.step}/${encodeURIComponent(p.code)}`}
-                                                                className="flex items-center justify-center h-24 w-24 bg-blue-300 rounded-full border-[6px] border-blue-400 shadow-lg transform transition-transform hover:scale-105"
+                                                                className={
+                                                                    p.played
+                                                                    ? "flex items-center justify-center h-24 w-24 bg-green-300 rounded-full border-[6px] border-green-400 shadow-lg transform transition-transform hover:scale-105"
+                                                                    : "flex items-center justify-center h-24 w-24 bg-blue-300 rounded-full border-[6px] border-blue-400 shadow-lg transform transition-transform hover:scale-105"}
                                                                 title={p.challenge}
                                                             >
                                                                 <span className="text-4xl">⭐</span>

@@ -6,6 +6,7 @@ export interface RolePlay {
     xp: number
     description?: string | null
     disabled: boolean
+    played: boolean
 }
 
 export interface RoleLevel {
@@ -43,6 +44,7 @@ export interface PlayStory {
 }
 
 export interface User {
+    _id: string
     username: string
     email: string
     name: null
