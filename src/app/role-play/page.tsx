@@ -51,12 +51,12 @@ export default function RolePlayPage() {
                                         <div className="flex justify-between items-center">
                                             <div>
                                                 <p className="text-sm font-bold uppercase opacity-90">
-                                                    Seção {role.code} / Unidade {lvl.step}
+                                                    Role {role.code} / Level {lvl.step}
                                                 </p>
                                                 <h2 className="text-2xl font-bold">{role.name}</h2>
                                             </div>
                                             <button className="bg-blue-900 text-white font-bold py-2 px-4 rounded-lg text-sm hover:bg-gray-600 transition-colors">
-                                                GUIA
+                                                GUIDE
                                             </button>
                                         </div>
                                     </div>
@@ -92,8 +92,8 @@ export default function RolePlayPage() {
                                                             <p className="mt-2 text-sm font-semibold text-white">{p.challenge}</p>
                                                             {
                                                                 !p.played && !isDone
-                                                                    ? (<> <p className="text-xs text-green-400">+{p.xp} Pontos</p> </>)
-                                                                    : (<> <p className="text-xs text-green-400">{p.xp_done} Pontos Obtidos</p> </>)
+                                                                    ? (<> <p className="text-xs text-green-400">+{p.xp} XP</p> </>)
+                                                                    : (<> <p className="text-xs text-green-400">{p.xp_done} XP Earned</p> </>)
                                                             }
                                                         </>
                                                     ) : (
@@ -127,7 +127,7 @@ export default function RolePlayPage() {
 
                     {/* Estado de "Nenhuma missão" */}
                     {!loading && roles && roles.length === 0 && (
-                        <div className="text-gray-400 text-center">Nenhuma missão disponível.</div>
+                        <div className="text-gray-400 text-center">None mission available.</div>
                     )}
                 </div>
             </main>

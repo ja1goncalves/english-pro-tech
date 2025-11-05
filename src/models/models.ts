@@ -28,6 +28,7 @@ export interface Role {
     disabled: boolean
 }
 export interface PlayMetadata {
+    answer: string | null
     question: string
     response: string
     xp: number
