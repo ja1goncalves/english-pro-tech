@@ -22,7 +22,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }){
     useEffect(() => {
         const getCurrentUser = async () => {
             const { 'ept.token': token } = parseCookies()
-            console.log('token')
             if (!token) {
                 setUser(null)
                 router.push('/login');

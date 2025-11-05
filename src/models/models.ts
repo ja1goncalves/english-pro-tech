@@ -1,5 +1,11 @@
 import {Profile, StudentLevel} from "@/models/types";
 
+export interface PlayTaskProps {
+    role: Role
+    level: RoleLevel
+    play: RolePlay
+}
+
 export interface RolePlay {
     code: string
     challenge: string
