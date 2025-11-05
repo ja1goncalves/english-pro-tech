@@ -1,8 +1,11 @@
+import {Profile, StudentLevel} from "@/models/types";
+
 export interface RolePlay {
     code: string
     challenge: string
     xp: number
     description?: string | null
+    disabled: boolean
 }
 
 export interface RoleLevel {
@@ -10,6 +13,7 @@ export interface RoleLevel {
     min_xp: number
     max_xp: number
     plays?: RolePlay[]
+    disabled: boolean
 }
 
 export interface Role {
@@ -19,4 +23,32 @@ export interface Role {
     min_xp: number
     max_xp: number
     level?: RoleLevel[]
+    disabled: boolean
+}
+export interface PlayMetadata {
+    question: string
+    response: string
+    xp: number
+    update_level: boolean
+    created_at: Date
+    disabled: boolean
+}
+
+export interface PlayStory {
+    role: string
+    level_step: number
+    play_code: string
+    xp: number
+    metadata: PlayMetadata[]
+}
+
+export interface User {
+    username: string
+    email: string
+    name: null
+    profile: Profile
+    document?: string
+    level?: StudentLevel
+    xp?: number | null
+    play_story?: PlayStory[]
 }

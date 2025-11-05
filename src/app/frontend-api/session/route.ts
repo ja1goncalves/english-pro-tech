@@ -8,7 +8,7 @@ async function makeCookie(token: string) {
     (await cookies()).set(cookie_name, token, {
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        maxAge: 60,
+        maxAge: 60 * 60,
         path: '/'
     });
 }

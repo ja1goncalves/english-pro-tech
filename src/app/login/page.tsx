@@ -40,28 +40,28 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-slate-900 px-4">
             <div className="w-full max-w-md">
                 <div className="mb-8 flex flex-col items-center">
-                    <div className="flex items-center gap-3 text-3xl font-bold text-slate-900">
+                    <div className="flex items-center gap-3 text-3xl font-bold text-slate-100">
                         <svg className="h-10 w-10 text-blue-500" fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="24" cy="24" r="20" />
                         </svg>
                         <h1>English Pro Tech</h1>
                     </div>
                 </div>
-                <div className="rounded-lg bg-white p-8 shadow-lg">
+                <div className="rounded-lg border-slate-700 bg-slate-800 p-8 shadow-lg">
                     <div className="mb-6 text-center">
-                        <h2 className="text-2xl font-bold text-slate-900">Welcome Back!</h2>
-                        <p className="text-gray-500">Sign in to continue your learning journey.</p>
+                        <h2 className="text-2xl font-bold text-slate-100">Welcome Back!</h2>
+                        <p className="text-gray-300">Sign in to continue your learning journey.</p>
                     </div>
                     <form onSubmit={onSubmit} className="space-y-6">
                         <div>
-                            <label className="block text-sm font-medium text-slate-900" htmlFor="username">Username</label>
+                            <label className="block text-sm font-medium text-slate-100" htmlFor="username">Username</label>
                             <div className="mt-1">
                                 <input
                                     id="username"
-                                    className="form-input block w-full rounded-md border-gray-300 bg-white px-4 py-3 text-slate-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                    className="form-input block w-full rounded-md border-gray-300 bg-white px-4 py-3 text-blue-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
                                     autoComplete="username"
@@ -70,11 +70,11 @@ export default function LoginPage() {
                             </div>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-slate-900" htmlFor="password">Password</label>
+                            <label className="block text-sm font-medium text-slate-100" htmlFor="password">Password</label>
                             <div className="mt-1">
                                 <input
                                     id="password"
-                                    className="form-input block w-full rounded-md border-gray-300 bg-white px-4 py-3 text-slate-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                    className="form-input block w-full rounded-md border-gray-300 bg-white px-4 py-3 text-blue-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -89,8 +89,8 @@ export default function LoginPage() {
                         <button className="flex w-full justify-center rounded-md border border-transparent bg-blue-500 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" disabled={loading} type="submit">
                             {loading ? 'Signing in...' : 'Login'}
                         </button>
-                        <div className="mt-2 text-center text-sm text-gray-500">
-                            Don&apos;t have an account? <a href="/sign-up" className="font-medium text-blue-600 hover:underline">Sign up</a>
+                        <div className="mt-2 text-center text-sm text-gray-300">
+                            Don&apos;t have an account? <a href="/sign-up" className="font-medium text-blue-400 hover:underline">Sign up</a>
                         </div>
                     </form>
                 </div>

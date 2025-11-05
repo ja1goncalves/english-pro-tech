@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
-import {NextResponse} from "next/server";
-import {logoutUser} from "@/service/user";
+import { NextResponse } from "next/server";
 
 const urlBase = process.env.EPT_API_URL || 'http://localhost:8000';
 const cookie_name = process.env.EPT_COOKIE_NAME || 'ept.token'

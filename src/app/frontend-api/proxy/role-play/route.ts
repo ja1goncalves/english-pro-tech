@@ -1,32 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
-
-const BACKEND = process.env.BACKEND_URL || 'http://localhost:8000'
-const COOKIE_NAME = 'ept.token'
-
-async function authHeader() {
-    const token = (await cookies()).get(COOKIE_NAME)?.value
-    if (!token) return null
-    return { Authorization: `Bearer ${token}` }
-}
+import { getRolePlays, playTask } from "@/service/role-plays";
 
 export async function GET() {
-    const headers = await authHeader()
-    if (!headers) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
-    const res = await fetch(`${BACKEND}/api/v1/role-play/`, { headers })
-    const text = await res.text()
-    return new NextResponse(text, { status: res.status, headers: { 'Content-Type': res.headers.get('Content-Type') || 'application/json' } })
+    const res = await getRolePlays()
+    return new NextResponse(await res.text(), { status: res.status, headers: { 'Content-Type': res.headers.get('Content-Type') || 'application/json' } })
 }
 
 export async function POST(req: NextRequest) {
-    const headers = await authHeader()
-    if (!headers) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
-    const body = await req.text()
-    const res = await fetch(`${BACKEND}/api/v1/role-play/`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...headers },
-        body,
-    })
+    const body = await req.json()
+    const { roleId, level, playCode } = body
+    const answer = body.answer || undefined
+    const res = await playTask(roleId, level, playCode, answer)
+
     const text = await res.text()
     return new NextResponse(text, { status: res.status, headers: { 'Content-Type': res.headers.get('Content-Type') || 'application/json' } })
 }
