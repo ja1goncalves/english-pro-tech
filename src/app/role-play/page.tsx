@@ -64,6 +64,7 @@ export default function RolePlayPage() {
                                         {(lvl.plays || []).map((p: RolePlay, index: number) => {
 
                                             // Assume que a primeira atividade (index 0) é a "atual"
+                                            const isDone = p.xp_done >= p.xp
                                             const isDisabled = lvl.disabled || role.disabled;
                                             const placement = getPlacement(index); // 0, 1, ou 2
 
@@ -72,25 +73,31 @@ export default function RolePlayPage() {
                                                 <div className="flex flex-col items-center text-center w-full">
                                                     {!isDisabled ? (
                                                         <>
-                                                            {/* Botão "Começar" acima do item atual */}
-                                                            <span className="uppercase text-white font-bold mb-2 text-sm tracking-wider">Começar</span>
-                                                            {/* Nó da Atividade Atual: Brilhante, maior e clicável */}
+                                                            <span className="uppercase text-white font-bold mb-2 text-sm tracking-wider">{
+                                                                isDone ? 'Retomar' : (
+                                                                    p.played && !isDone ? 'Continuar' : 'Começar'
+                                                                )
+                                                            }</span>
                                                             <Link
                                                                 href={`/role-play/play/${role._id}/${lvl.step}/${encodeURIComponent(p.code)}`}
                                                                 className={
-                                                                    p.played
+                                                                    p.played && isDone
                                                                     ? "flex items-center justify-center h-24 w-24 bg-green-300 rounded-full border-[6px] border-green-400 shadow-lg transform transition-transform hover:scale-105"
-                                                                    : "flex items-center justify-center h-24 w-24 bg-blue-300 rounded-full border-[6px] border-blue-400 shadow-lg transform transition-transform hover:scale-105"}
+                                                                    : p.played && !isDone ? "flex items-center justify-center h-24 w-24 bg-blue-300 rounded-full border-[6px] border-blue-400 shadow-lg transform transition-transform hover:scale-105"
+                                                                    : "flex items-center justify-center h-24 w-24 bg-gray-300 rounded-full border-[6px] border-gray-400 shadow-lg transform transition-transform hover:scale-105"}
                                                                 title={p.challenge}
                                                             >
                                                                 <span className="text-4xl">⭐</span>
                                                             </Link>
                                                             <p className="mt-2 text-sm font-semibold text-white">{p.challenge}</p>
-                                                            <p className="text-xs text-green-400">+{p.xp} Pontos</p>
+                                                            {
+                                                                !p.played && !isDone
+                                                                    ? (<> <p className="text-xs text-green-400">+{p.xp} Pontos</p> </>)
+                                                                    : (<> <p className="text-xs text-green-400">{p.xp_done} Pontos Obtidos</p> </>)
+                                                            }
                                                         </>
                                                     ) : (
                                                         <>
-                                                            {/* Nó da Atividade Bloqueada: Cinza e menor */}
                                                             <div
                                                                 className="flex items-center justify-center h-20 w-20 bg-gray-700 rounded-full border-4 border-gray-600 shadow-md opacity-60"
                                                                 title={p.challenge}

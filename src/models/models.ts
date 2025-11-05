@@ -7,6 +7,7 @@ export interface RolePlay {
     description?: string | null
     disabled: boolean
     played: boolean
+    xp_done: number
 }
 
 export interface RoleLevel {
