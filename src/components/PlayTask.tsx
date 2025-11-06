@@ -35,7 +35,7 @@ export function PlayTask({ role, level, play }: PlayTaskProps) {
 
         recognition.continuous = false;
         recognition.interimResults = false;
-        recognition.lang = 'en-US'; // Set language to English
+        recognition.lang = process.env.TTS_LANGUAGE || 'en-US'; // Set language to English
 
         recognition.onresult = (event: any) => {
             const transcript = event.results[0][0].transcript;
