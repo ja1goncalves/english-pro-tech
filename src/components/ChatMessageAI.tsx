@@ -7,9 +7,10 @@ interface ChatMessageProps {
     speaker: 'You' | 'Assistant';
     markdownText: string;
     rawText: string;
+    agent: 'gemini' | 'openai'
 }
 
-export const ChatMessageOpenAI: React.FC<ChatMessageProps> = ({ speaker, markdownText, rawText }) => {
+export const ChatMessageAI: React.FC<ChatMessageProps> = ({ speaker, markdownText, rawText, agent }) => {
 
     const [isTranscriptionVisible, setIsTranscriptionVisible] = useState(false);
 
@@ -33,7 +34,7 @@ export const ChatMessageOpenAI: React.FC<ChatMessageProps> = ({ speaker, markdow
 
         setIsLoading(true);
         try {
-            const response = await fetch('/frontend-api/tts', {
+            const response = await fetch(`/frontend-api/tts/${agent}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

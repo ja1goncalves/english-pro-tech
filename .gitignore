@@ -40,3 +40,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+/tenacious-torus-477400-b0-fe613a9b903c.json

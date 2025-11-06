@@ -3,7 +3,7 @@
 import React, {useCallback, useEffect, useMemo, useState, useRef} from "react";
 import {PlayStory, PlayTaskProps, User} from "@/models/models";
 import {ChatMessage} from "@/components/ChatMessage";
-import {ChatMessageOpenAI} from "@/components/ChatMessageOpenAI";
+import {ChatMessageAI} from "@/components/ChatMessageAI";
 
 // Declare the SpeechRecognition type for window
 // This is necessary because it's a browser-specific API
@@ -167,10 +167,11 @@ export function PlayTask({ role, level, play }: PlayTaskProps) {
                             />
 
                             {/* Machine response */}
-                            <ChatMessageOpenAI
+                            <ChatMessageAI
                                 speaker="Assistant"
                                 markdownText={assistantText}
                                 rawText={assistantText}
+                                agent={process.env.TTS_AGENT_AI?.includes("openai") ? "openai" : "gemini"}
                             />
                         </div>
                     )
