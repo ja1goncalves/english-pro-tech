@@ -52,7 +52,7 @@ export interface PlayStory {
 }
 
 export interface User {
-    _id: string
+    _id?: string
     username: string
     email: string
     name: null
