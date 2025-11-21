@@ -2,12 +2,14 @@
 
 import { useState} from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { ErrorToast } from "@/components/ErrorToast";
 
 export default function LoginPage() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const [showToast, setShowToast] = useState(false)
     const router = useRouter()
     const params = useSearchParams()
 
@@ -15,6 +17,7 @@ export default function LoginPage() {
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setError(null)
+        setShowToast(false)
         setLoading(true)
         try {
             const form = new URLSearchParams()
@@ -35,6 +38,7 @@ export default function LoginPage() {
             router.replace(next)
         } catch (err: any) {
             setError(err.message || 'Login failed')
+            setShowToast(true)
         } finally {
             setLoading(false)
         }
@@ -96,6 +100,7 @@ export default function LoginPage() {
                     </form>
                 </div>
             </div>
+            <ErrorToast show={showToast && !!error} message={error} onClose={() => setShowToast(false)} />
         </div>
     )
 }

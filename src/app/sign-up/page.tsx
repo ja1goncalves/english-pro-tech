@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {Profile, StudentLevel} from "@/models/types";
+import { ErrorToast } from "@/components/ErrorToast";
 
 export default function SignUpPage() {
     const [name, setName] = useState('')
@@ -14,14 +15,17 @@ export default function SignUpPage() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [success, setSuccess] = useState<string | null>(null)
+    const [showToast, setShowToast] = useState(false)
     const router = useRouter()
 
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setError(null)
         setSuccess(null)
+        setShowToast(false)
         if (password !== confirm) {
             setError('Passwords do not match')
+            setShowToast(true)
             return
         }
         try {
@@ -47,6 +51,7 @@ export default function SignUpPage() {
             setTimeout(() => router.replace('/login'), 1200)
         } catch (e: any) {
             setError(e?.message || 'Failed to register')
+            setShowToast(true)
         } finally {
             setLoading(false)
         }
@@ -116,6 +121,7 @@ export default function SignUpPage() {
                     </p>
                 </div>
             </div>
+            <ErrorToast show={showToast && !!error} message={error} onClose={() => setShowToast(false)} />
         </div>
     )
 }

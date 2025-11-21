@@ -5,17 +5,20 @@ import Link from 'next/link'
 import { Role, RoleLevel, RolePlay } from "@/models/models";
 import { getIcon, getPlacement } from "@/utils/helper";
 import {Header} from "@/components/Header";
+import { ErrorToast } from "@/components/ErrorToast";
 
 export default function RolePlayPage() {
     const [roles, setRoles] = useState<Role[] | null>(null)
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState(true)
+    const [showToast, setShowToast] = useState(false)
 
     useEffect(() => {
         const load = async () => {
             try {
                 setLoading(true)
                 setError(null)
+                setShowToast(false)
                 const res = await fetch('/frontend-api/proxy/role-play', { cache: 'no-store' })
                 if (!res.ok) {
                     const text = await res.text()
@@ -25,6 +28,7 @@ export default function RolePlayPage() {
                 setRoles(data)
             } catch (e: any) {
                 setError(e.message || 'Failed to load')
+                setShowToast(true)
             } finally {
                 setLoading(false)
             }
@@ -131,6 +135,7 @@ export default function RolePlayPage() {
                     )}
                 </div>
             </main>
+            <ErrorToast show={showToast && !!error} message={error} onClose={() => setShowToast(false)} />
         </div>
     )
 }
