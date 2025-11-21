@@ -6,6 +6,7 @@ import {PlayTask} from '@/components/PlayTask'
 import {Role, RoleLevel, RolePlay} from '@/models/models'
 import {useParams, useRouter} from 'next/navigation'
 import { ErrorToast } from "@/components/ErrorToast";
+import Link from 'next/link'
 
 export default function PlayTaskPage() {
   const params = useParams<{ roleId: string; level: string; playCode: string }>()
@@ -57,6 +58,16 @@ export default function PlayTaskPage() {
     <div className="bg-slate-900 text-slate-100 min-h-screen">
       <Header />
       <main className="px-4 py-6 max-w-3xl mx-auto">
+        {/* Back to Missions */}
+        <div className="mb-4">
+          <Link href="/role-play" className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <polyline points="15 18 9 12 15 6"></polyline>
+              <line x1="9" y1="12" x2="21" y2="12"></line>
+            </svg>
+            <span>Back to missions</span>
+          </Link>
+        </div>
         {loading && <div className="text-center text-slate-400 py-20">Loading missions...</div>}
         {error && <div className="text-center text-red-400 py-10 text-sm">{error}</div>}
 
